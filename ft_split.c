@@ -15,14 +15,14 @@
 
 static char const	*skip_char(char const *s, char c)
 {
-	while (*s == c)
+	while (*s && *s == c)
 		s++;
 	return (s);
 }
 
 static int			how_many(char const *s, char c)
 {
-	int co;
+	size_t co;
 	const char *s2;
 
 	co = 0;
@@ -46,13 +46,35 @@ static int			how_many(char const *s, char c)
 	return (co + 1);
 }
 
+/*static void			create_words(
+	char **words, char const *s, char c, size_t word_count)
+{
+	char *pointerator;
+
+	s = skip_char(s, c);
+	while (word_count--)
+	{
+		pointerator = ft_strchr(s, c);
+		if (pointerator != NULL)
+		{
+			*words = ft_substr(s, 0, pointerator - s);
+			s = skip_char(pointerator, c);
+		}
+		else
+			*words = ft_substr(s, 0, ft_strlen(s) + 1);
+		words++;
+	}
+	*words = NULL;
+}*/
+
 static void			word_maker(char const *s, char c, char **out, 
-int n_of_words)
+size_t n_of_words)
 {
 	const char	*walker;
 	int			beg;
 
 	walker = s;
+	walker = skip_char(walker, c);
 	while (n_of_words--)
 	{
 		walker = skip_char(walker, c);
@@ -68,7 +90,7 @@ int n_of_words)
 char				**ft_split(char const *s, char c)
 {
 	char		**out;
-	int			n_of_words;
+	size_t			n_of_words;
 
 	if (s == NULL)
 		return (NULL);
@@ -78,5 +100,6 @@ char				**ft_split(char const *s, char c)
 	if (out == NULL)
 		return (NULL);
 	word_maker(s, c, out, n_of_words);
+	//create_words(out, s, c, n_of_words);
 	return (out);
 }
